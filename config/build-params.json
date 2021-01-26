@@ -1,10 +1,35 @@
 {
-    "data1" : "synData1",
-    "n_vars1" : 1000,
-    "samples_per_cond1" : 5,
-    "n_diffexp1" : 200,
-    "output_file1" : "data/data1.rds",
-    "data2" : "synData2",
-    "n_diffexp2" : 500,
-    "output_file2" : "data/data2.rds"
+    "n_vars" : 12500,
+    "samples_per_cond" : 5,
+
+    "data4": "baseline4000_0",
+    "n_diffexp4" : 4000,
+    "output_file4" : "data/baseline4000_0.rds",
+
+    "data5" : "baseline2000_2000",
+    "upregulated_ratio5": 0.5,
+    "output_file5" : "data/baseline2000_2000.rds",
+    
+    "poisson_ratio": 0.5,
+
+    "data6": "poisson0_0",
+    "n_diffexp6" : 0,
+    "output_file6" : "data/poisson0_0.rds",
+
+    "data7": "poisson625_625",
+    "n_diffexp7" : 1250,
+    "upregulated_ratio7": 0.5,
+    "output_file7" : "data/poisson625_625.rds",
+
+    "single_count": 0.05, 
+
+    "data8": "single0_0",
+    "n_diffexp8" : 0,
+    "output_file8" : "data/single0_0.rds",
+
+    "data9": "single625_625",
+    "n_diffexp9" : 1250,
+    "upregulated_ratio9": 0.5,
+    
+    "output_file9" : "data/single625_625.rds"
 }

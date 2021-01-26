@@ -12,14 +12,60 @@ def main(targets):
         with open('config/build-params.json') as fh:
             data_cfg = json.load(fh)
         
-        #Create synthetic data #1 with 5 samples per conditon & 200 differentially expressed genes
-        synthetic_data1 = run_create_data_rscript(data_cfg.get('data1'), data_cfg.get('n_vars1'),
-                                                  data_cfg.get('samples_per_cond1'), 
-                                      data_cfg.get('n_diffexp1'), data_cfg.get('output_file1'))
-        #Create synthetic data #2 with 5 samples per conditon & 500 differentially expressed genes
-        synthetic_data2 = run_create_data_rscript(data_cfg.get('data2'), data_cfg.get('n_vars1'),
-                                                  data_cfg.get('samples_per_cond1'), 
-                                      data_cfg.get('n_diffexp2'), data_cfg.get('output_file2'))
+        # #Create synthetic data #1 with 5 samples per conditon & 200 differentially expressed genes
+        # synthetic_data1 = run_create_data_rscript(data_cfg.get('data1'), data_cfg.get('n_vars1'),
+        #                                           data_cfg.get('samples_per_cond1'), 
+        #                               data_cfg.get('n_diffexp1'), data_cfg.get('output_file1'))
+        # #Create synthetic data #2 with 5 samples per conditon & 500 differentially expressed genes
+        # synthetic_data2 = run_create_data_rscript(data_cfg.get('data2'), data_cfg.get('n_vars1'),
+        #                                           data_cfg.get('samples_per_cond1'), 
+        #                               data_cfg.get('n_diffexp2'), data_cfg.get('output_file2'))
+
+
+        # new stuff --------------------------------------------------------------------------------
+
+
+        #Create synthetic data baseline4000_0
+        synthetic_data4 = run_create_data_rscript(data_cfg.get('data4'), data_cfg.get('n_vars'),
+                                                  data_cfg.get('samples_per_cond'), 
+                                      data_cfg.get('n_diffexp4'), data_cfg.get('output_file4'),
+                                      upregulated=data_cfg.get('upregulated_ratio5'))
+
+
+        #Create synthetic data baseline2000_2000
+        synthetic_data5 = run_create_data_rscript(data_cfg.get('data5'), data_cfg.get('n_vars'),
+                                                  data_cfg.get('samples_per_cond'), 
+                                      data_cfg.get('n_diffexp4'), data_cfg.get('output_file5'),
+                                      upregulated=data_cfg.get('upregulated_ratio5'))
+
+
+        #Create synthetic data poisson0_0
+        synthetic_data6 = run_create_data_rscript(data_cfg.get('data6'), data_cfg.get('n_vars'),
+                                                  data_cfg.get('samples_per_cond'), 
+                                      data_cfg.get('n_diffexp6'), data_cfg.get('output_file6'),
+                                      poisson=data_cfg.get('poisson_ratio'))
+
+        #Create synthetic data poisson625_625
+        synthetic_data7 = run_create_data_rscript(data_cfg.get('data7'), data_cfg.get('n_vars'),
+                                                  data_cfg.get('samples_per_cond'), 
+                                      data_cfg.get('n_diffexp7'), data_cfg.get('output_file7'),
+                                      upregulated=data_cfg.get('upregulated_ratio7'),
+                                      poisson=data_cfg.get('poisson_ratio'))
+
+        #Create synthetic data single0_0
+        synthetic_data8 = run_create_data_rscript(data_cfg.get('data8'), data_cfg.get('n_vars'),
+                                                  data_cfg.get('samples_per_cond'), 
+                                      data_cfg.get('n_diffexp8'), data_cfg.get('output_file8'),
+                                      singleHigh=data_cfg.get('single_count'),
+                                      singleLow=data_cfg.get('single_count'))
+
+        #Create synthetic data single625_625
+        synthetic_data9 = run_create_data_rscript(data_cfg.get('data9'), data_cfg.get('n_vars'),
+                                                  data_cfg.get('samples_per_cond'), 
+                                      data_cfg.get('n_diffexp9'), data_cfg.get('output_file9'),
+                                      upregulated=data_cfg.get('upregulated_ratio9'),
+                                      singleHigh=data_cfg.get('single_count'),
+                                      singleLow=data_cfg.get('single_count'))
     
     #Run differential gene expression analysis tools on the synthetic data
     if 'analysis' in targets:
