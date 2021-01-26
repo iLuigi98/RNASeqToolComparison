@@ -20,6 +20,32 @@ if (tool == 'edgeR.exact') {
 
 
 
+if (tool == 'baySeq') {
+    #Run baySeq on synthetic data
+    runDiffExp(data.file = file.path(indir, data), result.extent = tool, Rmdfunction = rmdFunc, output.directory = file.path(outdir), norm.method = "edgeR", equaldisp  = TRUE, sample.size = 5000, estimation = "edgeR", pET = "iteratively")
+    }
+
+if (tool == 'NBPSeq') {
+    #Run edgeR on synthetic data
+    runDiffExp(data.file = file.path(indir, data), result.extent = tool, Rmdfunction = rmdFunc, output.directory = file.path(outdir), norm.method = "TMM", disp.method = "NBP")
+    }
+
+if (tool == 'NOISeq.prenorm') {
+    #Run DESeq2 on synthetic data
+    runDiffExp(data.file = file.path(indir, data), result.extent = tool, Rmdfunction = rmdFunc, output.directory = file.path(outdir), norm.method = "TMM")
+    }
+
+if (tool == 'TCC') {
+    #Run edgeR on synthetic data
+    runDiffExp(data.file = file.path(indir, data), result.extent = tool, Rmdfunction = rmdFunc, output.directory = file.path(outdir), norm.method = "tmm", test.method = "deseq", iteration = 3, normFDR = 0.1, floorPDEG = 0.05)
+    }
+
+if (tool == 'voom.limma') {
+    #Run edgeR on synthetic data
+    runDiffExp(data.file = file.path(indir, data), result.extent = tool, Rmdfunction = rmdFunc, output.directory = file.path(outdir), norm.method = "TMM")
+    }
+
+
 # #Compare the two tools
 # file.table <- data.frame(input.files = file.path('out', c("data1_DESeq2.rds", "data1_edgeR.exact.rds")), stringsAsFactors = FALSE)
 # params <- list(incl.nbr.samples = 5, incl.replicates = 1, incl.dataset = "dataExample", incl.de.methods = NULL,
