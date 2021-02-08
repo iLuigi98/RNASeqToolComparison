@@ -1,3 +1,16 @@
 {
-    "string": "hello world"
+    "test_data": "test_data",
+    "n_vars" : 100,
+    "samples_per_cond" : 5,
+    "repl_id" : 1,
+    "type1" : "none",
+    "regular_dispersion" : 0,
+    "seqdepth" : "1e7",
+    "outlier0" : 0,
+    "n_diffexp0" : 0,
+    "upregulated_ratio1" : 1,
+    "output_test" : "data/test_data.rds",
+
+    "analysis_test" : "test_data.rds",
+    "test_dir" : "out/test"
 }

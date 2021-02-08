@@ -125,7 +125,63 @@ def main(targets):
     if 'test' in targets:
         with open('config/test-params.json') as fh:
             t_data_cfg = json.load(fh)
-        testing = run_rscript_test(**t_data_cfg)
+
+        with open('config/analysis-params.json') as fh:
+            analysis_cfg = json.load(fh)
+
+        # Creating a test synthetic data for tools to be performed on
+        test_data = run_create_data_rscript(t_data_cfg.get('test_data'), t_data_cfg.get('n_vars'), t_data_cfg.get('samples_per_cond'), t_data_cfg.get('repl_id'), t_data_cfg.get('n_diffexp0'), t_data_cfg.get('upregulated_ratio1'), t_data_cfg.get('regular_dispersion'), t_data_cfg.get('type1'), t_data_cfg.get('outlier0'), t_data_cfg.get('output_test'), t_data_cfg.get('seqdepth'))
+        
+        #Run DESeq2 on the test data
+        logging.info("Performing DESeq2 on synthetic data test_data")
+        deseq2 = run_diff_exp_rscript(analysis_cfg.get('in_dir'), t_data_cfg.get('analysis_test'),
+                                        analysis_cfg.get('diffExp1'), analysis_cfg.get('Rmdfunc1'),
+                                        t_data_cfg.get('test_dir'))
+        logging.info("Finished performing DESeq2 on synthetic data test_data")
+
+        #Run edgeR.exact on the test data
+        logging.info("Performing edgeR on synthetic data test_data")
+        edgeR = run_diff_exp_rscript(analysis_cfg.get('in_dir'), t_data_cfg.get('analysis_test'),
+                                        analysis_cfg.get('diffExp2'), analysis_cfg.get('Rmdfunc2'),
+                                        t_data_cfg.get('test_dir'))
+        logging.info("Finished performing edgeR on synthetic data test_data")
+
+        #Run voom.limma on the test data
+        logging.info("Performing voom.limma on synthetic data test_data")
+        voom_limma = run_diff_exp_rscript(analysis_cfg.get('in_dir'), t_data_cfg.get('analysis_test'),
+                                        analysis_cfg.get('diffExp3'), analysis_cfg.get('Rmdfunc3'),
+                                        t_data_cfg.get('test_dir'))
+        logging.info("Finished performing voom.limma on synthetic data test_data")
+
+        #Run NOISeq on the test data
+        logging.info("Performing NOISeq on synthetic data test_data")
+        NOISeq = run_diff_exp_rscript(analysis_cfg.get('in_dir'), t_data_cfg.get('analysis_test'),
+                                        analysis_cfg.get('diffExp4'), analysis_cfg.get('Rmdfunc4'),
+                                        t_data_cfg.get('test_dir'))
+        logging.info("Finished performing NOISeq on synthetic data test_data")
+
+        #Run ttest on the test data
+        logging.info("Performing ttest on synthetic data test_data")
+        ttest = run_diff_exp_rscript(analysis_cfg.get('in_dir'), t_data_cfg.get('analysis_test'),
+                                        analysis_cfg.get('diffExp5'), analysis_cfg.get('Rmdfunc5'),
+                                        t_data_cfg.get('test_dir'))
+        logging.info("Finished performing ttest on synthetic data test_data")
+
+
+        #Run PoissonSeq on the test data
+        logging.info("Performing PoissonSeq on synthetic data test_data")
+        POIS = run_diff_exp_rscript(analysis_cfg.get('in_dir'), t_data_cfg.get('analysis_test'),
+                                        analysis_cfg.get('diffExp6'), analysis_cfg.get('Rmdfunc6'),
+                                        t_data_cfg.get('test_dir'))
+        logging.info("Finished performing PoissonSeq on synthetic data test_data")
+
+        #Run ABSSeq on the test data
+        logging.info("Performing ABSSeq on synthetic data test_data")
+        ABSSeq = run_diff_exp_rscript(analysis_cfg.get('in_dir'), t_data_cfg.get('analysis_test'),
+                                        analysis_cfg.get('diffExp7'), analysis_cfg.get('Rmdfunc7'),
+                                        t_data_cfg.get('test_dir'))
+        logging.info("Finished performing ABSSeq on synthetic data test_data")
+        
     return
 
 if __name__ == '__main__':
