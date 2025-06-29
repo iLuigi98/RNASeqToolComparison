@@ -1,71 +1,107 @@
 # RNASeqToolComparison
 
-## Overview
+# Differential Gene Expression Tools Research
 
-This project is a replication and exploration of the paper:  
-**"Post-mortem molecular profiling of three psychiatric disorders"**  
-by *Ramaker et al., Genome Medicine (2017)*
+**Authors**: Joseph Bui, Brandon Tsui, Luigi Cheng  
+**Original Repo**: [github.com/JosephBui21/RNASeqToolComparison](https://github.com/JosephBui21/RNASeqToolComparison)
 
-Our goals were:
-- Replicate core transcriptomic findings comparing **schizophrenia (SZ)**, **bipolar disorder (BPD)**, **major depressive disorder (MDD)**, and controls
-- Evaluate RNA-Seq tools such as **STAR** and **Kallisto** to determine trade-offs in speed, accuracy, and computational cost
+## Abstract
+RNA-Seq is a next-generation sequencing (NGS) method used to capture a snapshot of RNA presence and quantity in a sample. Differential gene expression (DGE) analysis reveals expression changes between groups (e.g., healthy vs disease). This project investigates the performance of several DGE tools:
+
+- **ABSSeq**
+- **voom.limma**
+- **PoissonSeq**
+- **DESeq2**
+- **NOISeq**
+- **ttest**
+- **edgeR**
+
+We evaluated these tools on synthetic RNA-seq datasets using metrics such as:
+- Area Under the Curve (AUC)
+- False Discovery Rate (FDR)
+- Type I Error Rate
+- Sensitivity
+
+## Background
+RNA-Seq has replaced older microarray techniques for transcriptomics, providing better accuracy and dynamic range. With many software options now available, researchers face challenges selecting appropriate tools for DGE. This study benchmarks commonly used methods to guide tool selection based on dataset characteristics and accuracy priorities.
+
+We focused exclusively on **differential expression tools**, since earlier steps like quality control are better assessed via runtime and computational performance.
 
 
-## Motivation
+## Dataset
+We used **synthetic post-alignment RNA-seq datasets** generated using `compcodeR` to simulate different experimental conditions:
 
-Analyzing psychiatric disease at the molecular level requires large-scale RNA-Seq data and thoughtful tool selection. Different tools yield different alignments, affecting gene expression quantification, differential expression results, and ultimately the biological conclusions.
+- Varying number of DE genes (up/down-regulated)
+- Inclusion of single/random outliers
+- Use of Poisson vs Negative Binomial distribution
+- Sample sizes: 2, 5, and 10 per condition
 
-In this project, we examined:
-- How choice of tools (STAR vs Kallisto) impacts output
-- Scenarios where speed, cost-efficiency, or accuracy should be prioritized
-- How improper tool choices can mislead research outcomes
+Advantages:
+- Ground truth is known → allows calculation of true accuracy
+- Reflects a variety of realistic RNA-seq scenarios
 
+##  Methods
+### Data Simulation
+Used `generateSyntheticData()` from `compcodeR` with:
+- 12,500 genes
+- Configurable dispersion, upregulation, and outlier parameters
+
+### Differential Expression Execution
+- Tools supported by `compcodeR`: used `runDiffExp()`
+- ABSSeq and PoissonSeq were run separately on extracted count matrices
+- Adjusted p-value cutoff: 0.05
+
+### Tool Summaries
+- **ABSSeq**: Absolute count differences using negative binomial models
+- **voom.limma**: Linear model after voom transformation and t-tests
+- **PoissonSeq**: Poisson log-linear model + permutation FDR estimation
+- **DESeq2**: NB modeling + GLM + Wald test
+- **NOISeq**: Non-parametric, fold-change driven
+- **ttest**: EdgeR with t-tests on normalized counts
+- **edgeR.exact**: NB-based exact test for replicated RNA-seq
+
+
+## Results
+### Area Under the ROC Curve (AUC)
+- All tools improved with increasing sample size
+- **DESeq2**, **edgeR.exact**, **voom.limma**, **ttest**, **PoissonSeq** performed comparably
+
+### Accuracy
+- Accuracy scaled with sample size
+- Most tools performed well except **ABSSeq**
+
+### False Discovery Rate (FDR)
+- **DESeq2**, **edgeR**, **voom.limma**, and **ttest** had lower, stable FDR
+- **ABSSeq** had high and variable FDR
+- **PoissonSeq** underperformed but improved with sample size
 
 ---
 
-## Methods & Data
+## Conclusion
+- No tool dominated across all metrics
+- **DESeq2** and **edgeR** are strong general-purpose choices
+- **edgeR** may be preferred for speed-sensitive projects
+- **voom.limma** and **ttest** perform better with Poisson-like distributions
+- **ABSSeq** underperformed except when few DE genes are expected (low FDR)
 
-- **Transcriptomic Data**: Modeled after the post-mortem RNA-Seq data used in the original study
-- **Brain Regions**:
-  - Anterior Cingulate Cortex (AnCg)
-  - Dorsolateral Prefrontal Cortex (DLPFC)
-  - Nucleus Accumbens (nAcc)
+Future work could involve:
+- Testing against real-life messy RNA-seq datasets
+- Incorporating additional tools with novel statistical assumptions
+- Assessing end-to-end pipelines beyond DGE only
 
-- **Tools Used**:
-  - `STAR` – high accuracy aligner, slower and resource-intensive
-  - `Kallisto` – fast, pseudoalignment-based, lower sensitivity
-  - `DESeq2` – for differential gene expression
-  - `R` and `Python` – for data processing, visualization
+## References
+- ABSSeq
+- voom.limma
+- PoissonSeq
+- DESeq2
+- NOISeq
+- edgeR
+- compcodeR
+- RNA-Seq methodology overview
 
----
 
-## Key Findings (Replication Summary)
+For more detailed methodology and full visualizations, please refer to our complete **research report** available in the repository.
 
-- Most significant gene expression changes occurred in **SZ** patients, especially in the **AnCg**
-- **EGR1** was significantly downregulated in SZ across cohorts, suggesting regulatory disruption
-- Gene sets showed:
-  - **Depletion of neuron-specific transcripts**
-  - **Enrichment of astrocyte-specific transcripts** in SZ and BPD
-- GABA-related metabolites aligned with reduced expression of GAD1/GAD2 enzymes
-
-## Technologies & Skills
-
-- RNA-Seq Analysis & Alignment  
-- STAR vs Kallisto benchmarking  
-- Differential Expression with DESeq2  
-- PCA & Cluster Analysis  
-- Python (pandas, seaborn), R  
-- Git & GitHub version control
-
-## Paper Reference
-
-**Ramaker et al. (2017)**  
-[Post-mortem molecular profiling of three psychiatric disorders](https://doi.org/10.1186/s13073-017-0458-5)  
-*Genome Medicine, 9, 72 (2017)*
-
-## Author
-
-**Luigi Cheng**  
-M.S. Data Science (UCSD, in progress)  
-GitHub: [@iLuigi98](https://github.com/iLuigi98)  
-Portfolio: [luigidata.com](https://luigidata.com)
+> Maintained by Luigi Cheng  
+> Portfolio: [https://iluigi98.github.io](https://iluigi98.github.io)
+"""
